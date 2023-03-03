@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@200;500&display=swap" rel="stylesheet">
+        <style>
+            *{ padding: 0; margin: 0; box-sizing: border-box; font-family: 'Josefin Sans', sans-serif; }
+             
+            .mainDiv{
+                width: 100%;
+                height: 100vh;
+                position: relative;
+                background:rgb(237, 212, 100);
+            }
+
+
+            .centreDiv{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50% , -50%);
+                text-align: center;
+            }
+
+            h1{ text-transform: capitalize;
+            text-align:center;
+        margin-bottom: 30px; color: #2980b9; font-size: 2.lrem; }
+
+        h2{ text-align: center;}
+
+        textarea{
+            background-color: #444;
+            box-shadow: 0 0 1px  rgba(0,0,0,0.2);
+            border-radius: 10px 10px 0 0;
+            border: 20px solid #34495e;
+            color: white;
+            font-size: lrem;
+        }
+
+        .mainbtn { padding: 10px 20px; border-radius: 20px;
+        border: 5px solid #2980b9;
+    background: #ecf0f1; font-size: lrem; }
+        </style>
+    </head>
+    <body>
+
+        <div class="mainDiv">
+            <div class="centreDiv">
+                <h1>Welcome To Typing Speed Test</h1>
+                <h2 id="msg"> </h2>
+                <br>
+                <textarea id="mywords"  cols="100"  rows="10" placeholder="Remember ,be nice!"> </textarea>
+                <br>
+                <button id="btn"  class="mainbtn">Start</button>
+            </div>
+        </div>
+
+        <script>
+
+        const setOfwords = ["The World is full of obvious things which nobody by any chance ever observes" ,
+    "My name is Abhishek kumar and I am a student." , "New Delhi is the capital of India." ,
+" India is the greatest country in the world." , "A genius is the man who can do the average thing when everyone else around him is losing his mind.", "Every mortal will eventually test deadth,but only some of them will test life."];
+
+const msg = document.getElementById('msg');
+const typewords = document.getElementById('mywords');
+const btn = document.getElementById('btn');
+let startTime , endTime;
+
+const playGame = () =>{
+    let randomNumber = Math.floor(Math.random()*setOfwords.length);
+    msg.innerText = setOfwords[randomNumber];
+    let date = new Date();
+    startTime = date.getTime();
+    btn.innerText = "Done";
+}
+
+const endPlay = () => {
+    let date = new Date();
+    endTime = date.getTime();
+    let totalTime = ((endTime - startTime)/ 1000);
+    console.log(totalTime);
+
+    let totalStr = typewords.value;
+    let wordCount = wordCounter(totalStr);
+
+    let speed = Math.round((wordCount / totalTime) * 60);
+
+    let finalMsg = "you typed total at " +speed+ "words per minute. " ;
+
+    finalMsg += compareWords(msg.innerText ,totalStr);
+
+    msg.innerText = finalMsg;
+}
+
+const compareWords = (str1, str2) =>{
+    let words1 = str1.split(" ");
+    let words2 = str2.split(" ");
+    let cnt = 0;
+
+// arrayName then foreach then it will take whole function with value and index no. of that array 
+
+    words1.forEach(function(item , index) {
+        if(item == words2[index]) {
+            cnt++;
+        }
+        
+    })
+
+    let errorwords = (words1.length - cnt);
+    return (cnt + " correct out of " + words1.length + " words and the total number of error are "+ errorwords + ".");
+}
+
+const wordCounter = (str) =>{
+    let response = str.split(" ").length;
+    console.log(response);
+    return response;
+}
+
+btn.addEventListener('click', function(){
+    
+    if(this.innerText == 'Start'){
+        typewords.disabled = false;
+        playGame();
+    }else if(this.innerText == "Done"){
+        typewords.disabled = true;
+        btn.innerText = "Start";
+        endPlay();
+    }
+})
+
+        </script>
+    </body>
+</html>
